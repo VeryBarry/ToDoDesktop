@@ -1,4 +1,45 @@
 package sample;
 
-public class Controller {
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
+import javafx.scene.control.ListView;
+import javafx.scene.control.TextField;
+
+import java.net.URL;
+import java.util.ResourceBundle;
+
+public class Controller implements Initializable {
+    @FXML
+    TextField textInput;
+    @FXML
+    ListView listView;
+
+    ObservableList<ToDoItem> items = FXCollections.observableArrayList();
+
+    public void addItem() {
+        String t = textInput.getText();
+        ToDoItem item = new ToDoItem(t, false);
+        items.add(item);
+        textInput.clear();
+    }
+
+    public void toggleItem() {
+        ToDoItem item = (ToDoItem) listView.getSelectionModel().getSelectedItem();
+        if (item != null) {
+            item.isDone = !item.isDone;
+            listView.refresh();
+        }
+    }
+
+    public void removeItem() {
+        ToDoItem item = (ToDoItem) listView.getSelectionModel().getSelectedItem();
+        items.remove(item);
+    }
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        listView.setItems(items);
+    }
 }
